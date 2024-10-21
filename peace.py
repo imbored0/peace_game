@@ -38,9 +38,9 @@ def card_comparison(p1_card, p2_card):
 
 	Hint, using the index function will make this very simple (one liner)"""
 	# Your code here
-	if ranks.index(p1_card) > ranks.index(p2_card):
+	if ranks.index(p1_card[0]) > ranks.index(p2_card[0]):
 		return 1
-	elif ranks.index(p1_card) < ranks.index(p2_card):
+	elif ranks.index(p1_card[0]) < ranks.index(p2_card[0]):
 		return 2
 	else:
 		return 0
