@@ -93,14 +93,8 @@ def peace(player1_hand, player2_hand):
     if cards_possible != 1:
         print(f"Because {player1_hand[0]} and {player2_hand[0]} have the same rank, drawing {cards_possible} cards from both decks...")
         time.sleep(1)
-        print("Peacedeck1 before pop", peacedeck1) #delete later
-        print("Peacedeck2 before pop", peacedeck2) #delete later
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
         for _ in range(cards_possible): peacedeck2.append(hand2.pop(0))
-        print(peacedeck1) #delete later ->
-        print(peacedeck2) # ---
-        print(hand1) # ---
-        print(hand2) # <- delete later
         peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
         if peace_state == 0:
@@ -141,7 +135,7 @@ def play_game():
     time.sleep(3)
     print("Cards dealt! Time to start.")
 
-    while len(hand1) != 0 or len(hand2 != 0):
+    while len(hand1) != 0 and len(hand2) != 0:
           print(f"Round has started. Player 1 has {len(hand1)} cards left, and Player 2 has {len(hand2)} cards left.")
           input("Hit 'enter' to play your cards.")
           play_round(hand1, hand2)
