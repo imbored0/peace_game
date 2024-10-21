@@ -114,7 +114,7 @@ def peace(player1_hand, player2_hand):
             print("Looks like Player 1 won this round of peace!")
             for _ in range(len(peacedeck1)): hand1.append(peacedeck1.pop(0))
             for _ in range(len(peacedeck2)): hand1.append(peacedeck2.pop(0))
-        elif peace_state == 1:
+        elif peace_state == 2:
             print("Looks like Player 2 won this round of peace!")
             for _ in range(len(peacedeck1)): hand2.append(peacedeck1.pop(0))
             for _ in range(len(peacedeck2)): hand2.append(peacedeck2.pop(0))
