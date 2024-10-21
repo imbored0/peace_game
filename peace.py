@@ -101,7 +101,7 @@ def peace(player1_hand, player2_hand):
         print(peacedeck2) # ---
         print(hand1) # ---
         print(hand2) # <- delete later
-        peace_state = card_comparison(peacedeck1[-1], [peacedeck2][-1])
+        peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
         if peace_state == 0:
             print("Uh oh! Looks like we need to go to peace again!")
