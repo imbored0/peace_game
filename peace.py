@@ -77,7 +77,7 @@ def play_round(player1_hand, player2_hand):
     else:
         print("Player 2 won this round!")
         hand2.append(hand1.pop(0))
-        hand1.append(hand1.pop(0))
+        hand2.append(hand2.pop(0))
 
 def peace(player1_hand, player2_hand):
     """Handle the 'peace' scenario when cards are equal.
