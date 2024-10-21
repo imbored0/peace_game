@@ -72,10 +72,12 @@ def play_round(player1_hand, player2_hand):
         peace(hand1, hand2)
     elif game_state == 1:
         print("Player 1 won this round!")
-        hand1 += hand2.pop(0)
+        hand1.append(hand2.pop(0))
+        hand1.append(hand1.pop(0))
     else:
         print("Player 2 won this round!")
-        hand2 += hand1.pop(0)
+        hand2.append(hand1.pop(0))
+        hand1.append(hand1.pop(0))
 
 def peace(player1_hand, player2_hand):
     """Handle the 'peace' scenario when cards are equal.
@@ -124,9 +126,12 @@ def peace(player1_hand, player2_hand):
             for _ in range(len(peacedeck2)): hand2.append(peacedeck2.pop(0))
     else:
           print("Someone's last card is the same as the other player's current card!")
-          print("Looks like we'll have to throw out the last card to make this game end!")
-          hand1.pop(0)
-          hand2.pop(0)
+          print("Going to make the player with the most cards pick a new top card!")
+          print("You'll be playing a regular round (if the next card has the same rank, you'll be seeing this again!)")
+          if len(hand1) != 1:
+            hand1.append(hand1.pop(0))
+          else:
+            hand2.append(hand2.pop(0))
 
 def play_game():
     """Main function to run the game."""
