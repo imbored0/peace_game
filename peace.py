@@ -1,6 +1,7 @@
 # Import necessary modules
 import random
 import time
+import os
 
 # Define the ranks and suits
 ranks: tuple[str] = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
@@ -10,26 +11,19 @@ suits: tuple[str] = ("hearts", "diamonds", "clubs", "spades")
 deck: list[tuple[str, str]] = [(rank, suit) for rank in ranks for suit in suits]
 
 # Shuffle the deck 
-i = 0
-randnums = []
-shuffleddeck = []
-while i < 52:
-	temprand = random.randint(0, 51)
-	if temprand in randnums:
-		continue
-	shuffleddeck.append(deck[temprand])
-	randnums.append(temprand)
-	i += 1
-	
-#or random.shuffle(deck) if you're boring
+
+random.shuffle(deck) # since you're boring
  
 # Split the deck into two hands
-hand1 = shuffleddeck[:26]
-hand2 = shuffleddeck[26:]
+hand1 = deck[:len(deck) / 2]
+hand2 = deck[len(deck / 2):]
 
 # Peace decks necessary in case peaces are stacked on top of each other
 peacedeck1 = []
 peacedeck2 = []
+
+def screen_clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def card_comparison(p1_card, p2_card):
 	"""This is the logic that compares two cards to find the stronger card
@@ -49,16 +43,39 @@ def card_possibility(hand_len1, hand_len2):
       """
       Checks how many cards are left in the deck so the peace function can address how many cards to take away.
       """
-      if hand_len1 >= 4 and hand_len2 >= 4:
-            return 4
-      elif hand_len1 == 3 or hand_len2 == 3:
-            return 3
+      if hand_len1 == 0 or hand_len2 == 0:
+            return 0
+      elif hand_len1 == 1 or hand_len2 == 1:
+            return 1
       elif hand_len1 == 2 or hand_len2 == 2:
             return 2
-      elif hand_len1 == 1 or hand_len1 == 1:
-            return 1
+      elif hand_len1 == 3 or hand_len2 == 3:
+            return 3
       else:
-           return 0
+            return 4
+
+def peace_reshuffler(peacedeck1, peacedeck2):
+    random.shuffle(peacedeck1)
+    random.shuffle(peacedeck2)
+
+def repeace_time(peacedeck1, peacedeck2):
+    print("Wow you must be really lucky! (or unlucky...)")
+    print("The previous round of peace took what was left of one player's cards and that last card seems to have been equal to the other player's last card...")
+    print("Reshuffling both player's peace bounty cards until a winner is found...")
+    while True:
+        peace_reshuffler(peacedeck1, peacedeck2)
+        if peacedeck1[-1] != peacedeck2[-1]:
+            return card_comparison(peacedeck1[-1], peacedeck2[-1])
+
+def call_winner(hand1, hand2, state):
+    if state == 1:
+        print("Looks like Player 1 won this round of peace!")
+        for _ in range(len(peacedeck1)): hand1.append(peacedeck1.pop(0))
+        for _ in range(len(peacedeck2)): hand1.append(peacedeck2.pop(0))
+    elif state == 2:
+        print("Looks like Player 2 won this round of peace!")
+        for _ in range(len(peacedeck1)): hand2.append(peacedeck1.pop(0))
+        for _ in range(len(peacedeck2)): hand2.append(peacedeck2.pop(0))
 
 def play_round(player1_hand, player2_hand):
     """Play a single round of the game.
@@ -81,7 +98,7 @@ def play_round(player1_hand, player2_hand):
         hand2.append(hand1.pop(0))
         hand2.append(hand2.pop(0))
 
-def peace(player1_hand, player2_hand):
+def peace(hand1, hand2): 
     """Handle the 'peace' scenario when cards are equal.
 		recall the rules of peace, both players put 3 cards face down, 
 		then both players flip face up a 4th card. The player with the stronger
@@ -91,14 +108,15 @@ def peace(player1_hand, player2_hand):
     input("It's time for peace! Hit 'enter' to continue.")
 
     cards_possible = card_possibility(len(hand1), len(hand2))
+    print(cards_possible)
 
-    if len(peacedeck1) != 0 or cards_possible != 1:
+    if (len(peacedeck1) != 0 and cards_possible == 1) or cards_possible >= 2:
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
         for _ in range(cards_possible): peacedeck2.append(hand2.pop(0))
         print(f"Because {peacedeck1[0]} and {peacedeck2[0]} have the same rank, drawing {cards_possible} cards from both decks...")
         time.sleep(1)
-        peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
+        peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         if peace_state == 0:
             print("Uh oh! Looks like we need to go to peace again!")
             if cards_possible == 4:
@@ -106,19 +124,11 @@ def peace(player1_hand, player2_hand):
                 peace(hand1, hand2)
             else:
                 print("Hey wait a minute! Someone doesn't have enough cards to go to peace again...")
-                print("Looks like we'll have to reshuffle the top cards and play a normal game!")
-                for _ in range(len(peacedeck1)): hand1.append(peacedeck1.pop(0))
-                for _ in range(len(peacedeck2)): hand2.append(peacedeck2.pop(0))
-                hand1.append(hand1.pop(0))
-                hand2.append(hand2.pop(0))
-        elif peace_state == 1:
-            print("Looks like Player 1 won this round of peace!")
-            for _ in range(len(peacedeck1)): hand1.append(peacedeck1.pop(0))
-            for _ in range(len(peacedeck2)): hand1.append(peacedeck2.pop(0))
-        elif peace_state == 2:
-            print("Looks like Player 2 won this round of peace!")
-            for _ in range(len(peacedeck1)): hand2.append(peacedeck1.pop(0))
-            for _ in range(len(peacedeck2)): hand2.append(peacedeck2.pop(0))
+                print("Looks like we'll have to reshuffle your peace earnings and try the compairson again!")
+                peace_reshuffler(peacedeck1, peacedeck2)
+                peace(hand1, hand2)
+        else:
+            call_winner(hand1, hand2, peace_state)
     elif cards_possible == 1:
         print("Someone's last card is the same as the other player's current card!")
         print("Going to make the player with the most cards pick a new top card!")
@@ -127,6 +137,9 @@ def peace(player1_hand, player2_hand):
             hand1.append(hand1.pop(0))
         else:
             hand2.append(hand2.pop(0))
+    else:
+        repeace_var = repeace_time(peacedeck1, peacedeck2)
+        call_winner(hand1, hand2, repeace_var)
 
 def play_game():
     """Main function to run the game."""
@@ -139,6 +152,8 @@ def play_game():
     while len(hand1) != 0 and len(hand2) != 0:
           print(f"Round has started. Player 1 has {len(hand1)} cards left, and Player 2 has {len(hand2)} cards left.")
           input("Hit 'enter' to play your cards.")
+          screen_clear()
+          time.sleep(0.5)
           play_round(hand1, hand2)
     
     if len(hand1) == 0:
