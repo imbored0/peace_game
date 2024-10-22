@@ -53,15 +53,12 @@ def card_possibility(hand_len1, hand_len2):
       else:
             return 4
 
-def peace_reshuffler(peacedeck1, peacedeck2):
-    random.shuffle(peacedeck1)
-    random.shuffle(peacedeck2)
-
 def repeace_time(peacedeck1, peacedeck2):
     print("Reshuffling both player's peace bounty cards until a winner is found...")
     time.sleep(2)
     while True:
-        peace_reshuffler(peacedeck1, peacedeck2)
+        random.shuffle(peacedeck1)
+        random.shuffle(peacedeck2)
         if peacedeck1[-1] != peacedeck2[-1]:
             return card_comparison(peacedeck1[-1], peacedeck2[-1])
 
