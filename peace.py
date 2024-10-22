@@ -107,9 +107,9 @@ def peace(hand1, hand2):
 
     cards_possible = card_possibility(len(hand1), len(hand2))
 
-    if cards_possible != 1 or (len(peacedeck1) != 0 and cards_possible == 1):
+    if cards_possible != 1 or (len(peacedeck1) > 0 and cards_possible == 1):
         prev_total = 0
-        if len(peacedeck1) != 0:
+        if len(peacedeck1) > 0:
             prev_total = len(peacedeck1) - 1
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
         for _ in range(cards_possible): peacedeck2.append(hand2.pop(0))
@@ -120,7 +120,7 @@ def peace(hand1, hand2):
         if peace_state == 0:
             cards_possible = card_possibility(len(hand1), len(hand2))
             print("Uh oh! Looks like we need to go to peace again!")
-            if cards_possible == 4:
+            if cards_possible > 0:
                 print(f"Looks like an even bigger pot this time, with the winner taking home {len(peacedeck1) + cards_possible} cards this time!")
                 peace(hand1, hand2)
             else:
