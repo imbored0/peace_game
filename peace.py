@@ -11,14 +11,13 @@ suits: tuple[str] = ("hearts", "diamonds", "clubs", "spades")
 deck: list[tuple[str, str]] = [(rank, suit) for rank in ranks for suit in suits]
 
 # Shuffle the deck 
-
 random.shuffle(deck) # since you're boring
  
 # Split the deck into two hands
 hand1 = deck[:int(len(deck) / 2)]
 hand2 = deck[int(len(deck) / 2):]
 
-# Peace decks necessary in case peaces are stacked on top of each other
+# Peacedecks necessary in case peaces are stacked on top of each other
 peacedeck1 = []
 peacedeck2 = []
 
@@ -109,9 +108,12 @@ def peace(hand1, hand2):
     cards_possible = card_possibility(len(hand1), len(hand2))
 
     if cards_possible != 1 or (len(peacedeck1) != 0 and cards_possible == 1):
+        prev_total = 0
+        if len(peacedeck1) != 0:
+            prev_total = len(peacedeck1) - 1
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
         for _ in range(cards_possible): peacedeck2.append(hand2.pop(0))
-        print(f"Because {peacedeck1[0]} and {peacedeck2[0]} have the same rank, drawing {cards_possible} cards from both decks...")
+        print(f"Because {peacedeck1[0 + prev_total]} and {peacedeck2[0 + prev_total]} have the same rank, drawing {cards_possible} cards from both decks...")
         time.sleep(1) 
         print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
         peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
@@ -124,13 +126,17 @@ def peace(hand1, hand2):
             else:
                 print("Hey wait a minute! Someone doesn't have enough cards to go to peace again...")
                 state = repeace_time(peacedeck1, peacedeck2)
+                print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
                 peace_winner(hand1, hand2, state)
         else:
             peace_winner(hand1, hand2, peace_state)
     else:
         print("Someone's last card is the same as the other player's current card!")
+        time.sleep(1)
         print("Going to make the player with the most cards pick a new top card!")
+        time.sleep(1)
         print("You'll be playing a regular round (if the next card has the same rank, you'll be seeing this again!)")
+        time.sleep(1)
         if len(hand1) != 1:
             hand1.append(hand1.pop(0))
         else:
