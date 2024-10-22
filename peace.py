@@ -59,9 +59,8 @@ def peace_reshuffler(peacedeck1, peacedeck2):
     random.shuffle(peacedeck2)
 
 def repeace_time(peacedeck1, peacedeck2):
-    print("Wow you must be really lucky! (or unlucky...)")
-    print("The previous round of peace took what was left of one player's cards and that last card seems to have been equal to the other player's last card...")
     print("Reshuffling both player's peace bounty cards until a winner is found...")
+    time.sleep(2)
     while True:
         peace_reshuffler(peacedeck1, peacedeck2)
         if peacedeck1[-1] != peacedeck2[-1]:
@@ -109,11 +108,11 @@ def peace(hand1, hand2):
 
     cards_possible = card_possibility(len(hand1), len(hand2))
 
-    if (len(peacedeck1) != 0 and cards_possible == 1) or cards_possible >= 2:
+    if cards_possible != 1 or (len(peacedeck1) != 0 and cards_possible == 1):
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
         for _ in range(cards_possible): peacedeck2.append(hand2.pop(0))
         print(f"Because {peacedeck1[0]} and {peacedeck2[0]} have the same rank, drawing {cards_possible} cards from both decks...")
-        time.sleep(1)
+        time.sleep(1) 
         print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
         peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         if peace_state == 0:
@@ -124,7 +123,6 @@ def peace(hand1, hand2):
                 peace(hand1, hand2)
             else:
                 print("Hey wait a minute! Someone doesn't have enough cards to go to peace again...")
-                print("We'll reshuffle both your peace earnings until someone wins.")
                 state = repeace_time(peacedeck1, peacedeck2)
                 peace_winner(hand1, hand2, state)
         else:
@@ -154,7 +152,7 @@ def play_game():
           play_round(hand1, hand2)
     
     if len(hand1) == 0:
-          print("Player 2 has won this game of Peace! Better luck next time Player 2.")
+          print("Player 2 has won this game of Peace! Better luck next time Player 1.")
     else:
           print("Player 1 has won this game of Peace! Better luck next time Player 2.")
 
