@@ -81,7 +81,7 @@ def play_round(player1_hand, player2_hand):
     p1_card = player1_hand[0]
     p2_card = player2_hand[0]
     game_state = card_comparison(p1_card, p2_card)
-    print(f"Playing cards! Player 1 flipped {p1_card} and Player 2 flipped {p2_card}!")
+    print(f"Playing cards! Player 1 flipped the {str(p1_card[0])} of {str(p1_card[1])} and Player 2 flipped the {str(p2_card[0])} of {str(p2_card[1])}!")
     if game_state == 0:
         peace(hand1, hand2)
     elif game_state == 1:
@@ -110,9 +110,9 @@ def peace(hand1, hand2):
             prev_total = len(peacedeck1) - 1
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
         for _ in range(cards_possible): peacedeck2.append(hand2.pop(0))
-        print(f"Because {peacedeck1[0 + prev_total]} and {peacedeck2[0 + prev_total]} have the same rank, drawing {cards_possible} cards from both decks...")
+        print(f"Because {peacedeck1[0 + prev_total][0]} of {peacedeck1[0 + prev_total][1]} and {peacedeck2[0 + prev_total][0]} of {peacedeck2[0 + prev_total][1]} have the same rank, drawing {cards_possible} cards from both decks...")
         time.sleep(1) 
-        print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
+        print(f"Cards drawn! Player 1, your top card is {str(peacedeck1[-1][0])} of {str(peacedeck1[-1][1])}, and Player 2, your top card is {str(peacedeck2[-1][0])} of {str(peacedeck2[-1][1])}.")
         peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         if peace_state == 0:
             cards_possible = card_possibility(len(hand1), len(hand2))
@@ -123,7 +123,7 @@ def peace(hand1, hand2):
             else:
                 print("Hey wait a minute! Someone doesn't have enough cards to go to peace again...")
                 state = repeace_time(peacedeck1, peacedeck2)
-                print(f"Cards drawn! Player 1, your top card is {peacedeck1[-1]}, and Player 2, your top card is {peacedeck2[-1]}.")
+                print(f"Cards drawn! Player 1, your top card is {str(peacedeck1[-1][0])} of {str(peacedeck1[-1][1])}, and Player 2, your top card is {str(peacedeck2[-1][0])} of {str(peacedeck2[-1][1])}.")
                 peace_winner(hand1, hand2, state)
         else:
             peace_winner(hand1, hand2, peace_state)
