@@ -14,17 +14,17 @@ deck: list[tuple[str, str]] = [(rank, suit) for rank in ranks for suit in suits]
 random.shuffle(deck) # since you're boring
  
 # Split the deck into two hands
-hand1 = deck[:int(len(deck) / 2)]
-hand2 = deck[int(len(deck) / 2):]
+hand1: list[tuple[str, str]] = deck[:int(len(deck) / 2)]
+hand2: list[tuple[str, str]] = deck[int(len(deck) / 2):]
 
 # Peacedecks necessary in case peaces are stacked on top of each other
-peacedeck1 = []
-peacedeck2 = []
+peacedeck1: list = []
+peacedeck2: list = []
 
-def screen_clear():
+def screen_clear() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def card_comparison(p1_card, p2_card):
+def card_comparison(p1_card: tuple[str, str], p2_card: tuple[str, str]) -> int:
 	"""This is the logic that compares two cards to find the stronger card
 	Return 1 if player 1's card is strong, 2 for player 2
 	if the cards are equal, return 0.
@@ -38,7 +38,7 @@ def card_comparison(p1_card, p2_card):
 	else:
 		return 0
       
-def card_possibility(hand_len1, hand_len2):
+def card_possibility(hand_len1: int, hand_len2: int) -> int:
       """
       Checks how many cards are left in the deck so the peace function can address how many cards to take away.
       """
@@ -53,7 +53,7 @@ def card_possibility(hand_len1, hand_len2):
       else:
             return 4
 
-def repeace_time(peacedeck1, peacedeck2):
+def repeace_time(peacedeck1: list[tuple[str, str]], peacedeck2: list[tuple[str, str]]) -> int:
     print("Reshuffling both player's peace bounty cards until a winner is found...")
     time.sleep(2)
     while True:
@@ -62,7 +62,7 @@ def repeace_time(peacedeck1, peacedeck2):
         if peacedeck1[-1] != peacedeck2[-1]:
             return card_comparison(peacedeck1[-1], peacedeck2[-1])
 
-def peace_winner(hand1, hand2, state):
+def peace_winner(hand1: list[tuple[str, str]], hand2: list[tuple[str, str]], state: int) -> None:
     if state == 1:
         print("Looks like Player 1 won this round of peace!")
         for _ in range(len(peacedeck1)): hand1.append(peacedeck1.pop(0))
@@ -72,15 +72,15 @@ def peace_winner(hand1, hand2, state):
         for _ in range(len(peacedeck1)): hand2.append(peacedeck1.pop(0))
         for _ in range(len(peacedeck2)): hand2.append(peacedeck2.pop(0))
 
-def play_round(player1_hand, player2_hand):
+def play_round(player1_hand: list[tuple[str, str]], player2_hand: list[tuple[str, str]]) -> None:
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the peace function
 	"""
     # Your code here
-    p1_card = player1_hand[0]
-    p2_card = player2_hand[0]
-    game_state = card_comparison(p1_card, p2_card)
+    p1_card: tuple[str, str] = player1_hand[0]
+    p2_card: tuple[str, str] = player2_hand[0]
+    game_state: int = card_comparison(p1_card, p2_card)
     print(f"Playing cards! Player 1 flipped the {str(p1_card[0])} of {str(p1_card[1])} and Player 2 flipped the {str(p2_card[0])} of {str(p2_card[1])}!")
     if game_state == 0:
         peace(hand1, hand2)
@@ -93,7 +93,7 @@ def play_round(player1_hand, player2_hand):
         hand2.append(hand1.pop(0))
         hand2.append(hand2.pop(0))
 
-def peace(hand1, hand2): 
+def peace(hand1: list[tuple[str, str]], hand2: list[tuple[str, str]]) -> None: 
     """Handle the 'peace' scenario when cards are equal.
 		recall the rules of peace, both players put 3 cards face down, 
 		then both players flip face up a 4th card. The player with the stronger
@@ -102,10 +102,10 @@ def peace(hand1, hand2):
     # Your code here
     input("It's time for peace! Hit 'enter' to continue.")
 
-    cards_possible = card_possibility(len(hand1), len(hand2))
+    cards_possible: int = card_possibility(len(hand1), len(hand2))
 
     if cards_possible != 1 or (len(peacedeck1) > 0 and cards_possible == 1):
-        prev_total = 0
+        prev_total: int = 0
         if len(peacedeck1) > 0:
             prev_total = len(peacedeck1) - 1
         for _ in range(cards_possible): peacedeck1.append(hand1.pop(0)) 
@@ -115,7 +115,7 @@ def peace(hand1, hand2):
         print(f"Cards drawn! Player 1, your top card is {str(peacedeck1[-1][0])} of {str(peacedeck1[-1][1])}, and Player 2, your top card is {str(peacedeck2[-1][0])} of {str(peacedeck2[-1][1])}.")
         peace_state = card_comparison(peacedeck1[-1], peacedeck2[-1])
         if peace_state == 0:
-            cards_possible = card_possibility(len(hand1), len(hand2))
+            cards_possible: int = card_possibility(len(hand1), len(hand2))
             print("Uh oh! Looks like we need to go to peace again!")
             if cards_possible > 0:
                 print(f"Looks like an even bigger pot this time, with the winner taking home {len(peacedeck1) + cards_possible} cards this time!")
@@ -139,7 +139,7 @@ def peace(hand1, hand2):
         else:
             hand2.append(hand2.pop(0))
 
-def play_game():
+def play_game() -> None:
     """Main function to run the game."""
     # Your code here
     input("Let's play a game of Peace! Hit 'enter' to continue.")
